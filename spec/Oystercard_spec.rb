@@ -27,15 +27,12 @@ describe Oystercard do
     end
   end
 
-<<<<<<< HEAD
-=======
   describe "#deduct" do
     it "should deduct an amount from Oystercard" do
       expect{oystercard_full.send(:deduct, 1)}.to change{oystercard_full.balance}.by -1
     end
   end
 
->>>>>>> a0afedb669d79b82e82ebde9a10bd6a1d6057fdb
   describe '#in_journey?' do
      it "returns true if the oystercard is mid-journey" do
         oystercard_full.touch_in(station)
@@ -61,17 +58,6 @@ describe Oystercard do
     end
   end
 
-<<<<<<< HEAD
-  describe "#touch_out" do
-    it "should deduct money when the user touches out." do
-      oyster = Oystercard.new
-      oyster.top_up(10)
-      oyster.touch_in
-      oyster.touch_out
-      expect{oyster.touch_out}.to change{oyster.balance}.by -1
-    end
-  end
-=======
   describe '#touch_out' do
     it "reduces the balance by the minimum fare when you touch out" do
         oystercard_full.touch_in(station)
@@ -85,5 +71,4 @@ describe Oystercard do
     end
   end
 
->>>>>>> a0afedb669d79b82e82ebde9a10bd6a1d6057fdb
 end
