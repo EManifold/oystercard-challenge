@@ -36,30 +36,10 @@ describe Oystercard do
     end
   end
 
-  describe '#in_journey?' do
-     before(:each) do
-       oystercard_full.touch_in(station)
-     end
-
-     it "returns true if the oystercard is mid-journey" do
-       expect(oystercard_full).to be_in_journey
-     end
-
-     it 'returns false if the oystercard is not mid-journey' do
-       oystercard_full.touch_out(station)
-       expect(oystercard_full).to_not be_in_journey
-     end
-  end
-
   describe "#touch_in" do
     it "throws an error if balance is < 1 when touching in" do
       allow(subject).to receive(:balance) { 0 }
       expect{subject.touch_in(station)}.to raise_error("Insufficient funds")
-    end
-
-    it "remembers the entry station" do
-      oystercard_full.touch_in(station)
-      expect(oystercard_full.entry_station).to eq station
     end
   end
 
@@ -89,10 +69,5 @@ describe Oystercard do
       expect(oystercard_full.journey_history.length).to eq 1
     end
 
-    it "the entry station returns to nil" do
-        oystercard_full.touch_in(station)
-        oystercard_full.touch_out(station)
-        expect(oystercard_full.entry_station).to eq nil
-    end
   end
 end
