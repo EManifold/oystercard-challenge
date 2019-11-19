@@ -2,6 +2,13 @@ require 'Oystercard'
 
 describe Oystercard do
 
+  let(:station) { double :station }
+  let(:oystercard_full) { Oystercard.new }
+
+  before(:each) do
+    oystercard_full.top_up(Oystercard::BALANCE_LIMIT)
+  end
+
    describe '#balance' do
      it 'balance on card should be 0' do
        expect(subject.balance).to eq 0
@@ -22,15 +29,14 @@ describe Oystercard do
 
   describe "#deduct" do
     it "should deduct an amount from Oystercard" do
-      expect{subject.send(:deduct, 1)}.to change{subject.balance}.by -1
+      expect{oystercard_full.send(:deduct, 1)}.to change{oystercard_full.balance}.by -1
     end
   end
 
   describe '#in_journey?' do
      it "returns true if the oystercard is mid-journey" do
-        subject.top_up(2)
-        subject.touch_in
-        is_expected.to be_in_journey
+        oystercard_full.touch_in(station)
+        expect(oystercard_full).to be_in_journey
      end
 
      it 'returns false if the oystercard is not mid-journey' do
@@ -40,18 +46,29 @@ describe Oystercard do
   end
 
   describe "#touch_in" do
+
     it "throws an error if balance is < 1 when touching in" do
       allow(subject).to receive(:balance) { 0 }
-      expect{subject.touch_in}.to raise_error("Insufficient funds")
+      expect{subject.touch_in(station)}.to raise_error("Insufficient funds")
+    end
+
+    it "remember the entry station" do
+      oystercard_full.touch_in(station)
+      expect(oystercard_full.entry_station).to eq station
     end
 
   end
 
   describe '#touch_out' do
     it "reduces the balance by the minimum fare when you touch out" do
-        subject.top_up(1)
-        subject.touch_in
-       expect {subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_FARE)
+        oystercard_full.touch_in(station)
+       expect {oystercard_full.touch_out}.to change{oystercard_full.balance}.by(-Oystercard::MINIMUM_FARE)
+    end
+
+    it "forgets entry station" do
+        oystercard_full.touch_in(station)
+        oystercard_full.touch_out
+        expect(oystercard_full.entry_station).to eq nil
     end
   end
 
