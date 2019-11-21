@@ -1,7 +1,5 @@
 require_relative 'Journey'
-
 class Oystercard
-
   attr_reader :balance, :journey_history
 
   BALANCE_LIMIT = 90
@@ -24,16 +22,14 @@ class Oystercard
   end
 
   def touch_out(station)
-     deduct(MINIMUM_FARE)
+     deduct(@journey.fare)
      @journey.finish(station)
      @journey_history.push({entry_station: @journey.entry_station, exit_station: @journey.exit_station})
   end
 
-
   private
-
   def deduct(amount)
     @balance -= amount
   end
-
+  
 end

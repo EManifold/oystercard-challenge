@@ -3,7 +3,7 @@ require 'Station'
 describe Station do
 
   describe "#initialize" do
-    
+
     station = Station.new(:name, :zone)
 
       it "should have a name" do
