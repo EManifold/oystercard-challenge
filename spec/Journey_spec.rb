@@ -3,13 +3,14 @@ require 'Oystercard'
 describe Journey do
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
+
   describe '#start' do
     it 'should start a journey' do
       expect(subject.start(entry_station)).to eq 'Journey has begun'
     end
     it "remembers entry station" do
       subject.start(entry_station)
-    expect(subject.entry_station).to eq(entry_station)
+      expect(subject.entry_station).to eq(entry_station)
     end
   end
   describe '#finish' do
